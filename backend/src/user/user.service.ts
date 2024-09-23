@@ -51,4 +51,37 @@ export class UserService {
       },
     });
   }
+
+  async searchUsers(fullname: string, userId: number) {
+    return this.prisma.user.findMany({
+      where: {
+        fullname: {
+          contains: fullname,
+        },
+        id: {
+          not: userId,
+        },
+      },
+    });
+  }
+
+  async getUserOfChatroom(chatroomId: number) {
+    return this.prisma.user.findMany({
+      where: {
+        chatrooms: {
+          some: {
+            id: chatroomId,
+          }
+        }
+      },
+    });
+  }
+
+  async getUser(userId: number) {
+    return this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  }
 }
